@@ -1,0 +1,59 @@
+// check
+const todos = JSON.parse(localStorage.getItem('list'))
+? JSON.parse(localStorage.getItem('list'))
+: []
+
+// set todos
+function setTodos() {
+    localStorage.setItem('list', JSON.stringify(todos))
+}
+
+function showTodos() {
+    const todos = JSON.parse(localStorage.getItem('list'))
+    ? JSON.parse(localStorage.getItem('list'))
+    : []
+
+    listGroupTodo.innerHTML = ''
+    todos.forEach((item, i) => {
+        listGroupTodo.innerHTML += `
+        <li class="list-group-item d-flex justify-content-between">
+            ${item.text}
+            <span class="todos-icons">
+              <span class="todos-time opacity-50 me-2">
+                ${item.time}
+              </span>
+              <img src="./img/edit.svg" alt="edit icon" width="25px" height="25px">
+              <img src="./img/delete.svg" alt="delete icon" width="25px" height="25px">
+            </span>
+        </li>`
+    })
+}
+
+showTodos()
+
+// show error
+function showError(where, message) {
+    document.getElementById(where).textContent = message
+    setTimeout(() => {
+        document.getElementById(where).textContent = ''
+    }, 2500)
+}
+
+// get todos
+formCreate.addEventListener('submit', (e) => {
+    e.preventDefault()
+    const todoText = formCreate['input-create'].value.trim()
+    formCreate.reset()
+
+    if(todoText.length) {
+        todos.push({
+            text: todoText,
+            time: '16:51 12.09.2022',
+            complated: false
+        })
+        setTodos()
+        showTodos()
+    } else {
+        showError('message-create', 'Please enter some text...')
+    }
+})
